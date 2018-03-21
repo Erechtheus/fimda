@@ -40,8 +40,8 @@ The following top level milestones do not strictly depend on each other:
             * start UIMA analyzer: `PATH/TO/UIMA-SDK/bin/documentAnalyzer.sh`
 - [x] move to full [UIMA application](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.application)
     * [JSON serialization](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.json)
-- [ ] think about logging
-- [ ] think about multi threading (see [UIMA Multi-threaded Applications](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.applications.multi_threaded))
+- ~~[ ] think about logging~~
+- ~~[ ] think about multi threading (see [UIMA Multi-threaded Applications](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.applications.multi_threaded))~~
 - [x] implement rest service (MVP)
     * use spring-mvc: [guide](https://spring.io/guides/gs/rest-service/)
 - [x] implement complete MutationAnnotation CAS type
@@ -49,4 +49,11 @@ The following top level milestones do not strictly depend on each other:
     * identify feature types
     * define mappings to CAS primitive types and/or integrate required SETH types into SethTypeSystem.xml
     
-- [x] write unit test: produce UIMA json from input text
+- [x] write unit test: produce UIMA json from input text (via [spring](https://spring.io/guides/gs/testing-web/))
+- [ ] create a release ([maven how-to](http://blog.soebes.de/blog/2016/08/08/maven-how-to-create-a-release/))
+- [ ] push image to Docker Hub
+    * choose "good" `docker.image.prefix`, currently it is "dfki"
+    * create (?) docker account
+    * tag image as `latest`
+
+- [ ] write how-to-integrate NER service (?)
