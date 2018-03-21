@@ -22,3 +22,8 @@ docker run -p 8080:8080 dfki/fimda:0.0.1-Snapshot
 
 Note: `mvn package` creates the local docker image `dfki/fimda:0.0.1-Snapshot`
 
+Now, a rest service should be available at `http://localhost:8080/annotate`.
+
+Call it like: [http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met](http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met)
+
+
