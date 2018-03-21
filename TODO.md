@@ -40,8 +40,8 @@ The following top level milestones do not strictly depend on each other:
             * start UIMA analyzer: `PATH/TO/UIMA-SDK/bin/documentAnalyzer.sh`
 - [x] move to full [UIMA application](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.application)
     * [JSON serialization](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.json)
-- ~~[ ] think about logging~~
-- ~~[ ] think about multi threading (see [UIMA Multi-threaded Applications](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.applications.multi_threaded))~~
+- [ ] ~~think about logging~~
+- [ ] ~~think about multi threading (see [UIMA Multi-threaded Applications](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.applications.multi_threaded))~~
 - [x] implement rest service (MVP)
     * use spring-mvc: [guide](https://spring.io/guides/gs/rest-service/)
 - [x] implement complete MutationAnnotation CAS type
