@@ -1,9 +1,9 @@
 # FIMDA
-UIMA wrapper for SETH with docker container and webservice
+UIMA wrapper for [SETH](http://rockt.github.io/SETH/) with docker container and webservice
 
 # Usage
 
-Requires maven and git.
+Requires [maven](https://maven.apache.org/index.html) and [git](https://git-scm.com/).
 
 Clone this repo and switch into the directory:
 
@@ -13,7 +13,7 @@ To start the service, execute:
 
 `mvn spring-boot:run`
 
-or, to start via docker (has to be installed), execute:
+or, to start via [docker](https://docs.docker.com/) (has to be installed), execute:
 
 ```bash
 mvn package
