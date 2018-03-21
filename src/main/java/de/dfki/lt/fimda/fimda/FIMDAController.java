@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -33,7 +34,14 @@ public class FIMDAController {
 
         //get Resource Specifier from XML file
         //XMLInputSource in = new XMLInputSource("src/main/resources/desc/MutationAnnotator.xml");
-        XMLInputSource in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
+        XMLInputSource in;
+        try {
+            String fn = getClass().getResource("/resources/desc/MutationAnnotator.xml").getFile();
+            in = new XMLInputSource(fn);
+        } catch (FileNotFoundException e){
+            in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
+        }
+
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
 
         //create AE here

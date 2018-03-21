@@ -8,8 +8,8 @@ The focus rests on software development and integration.
 
 The following top level milestones do not strictly depend on each other:
 1. UIMA XMI data format serialization for SETH output
-2. SETH REST endpoint
-3. dockerized SETH
+2. REST endpoint
+3. dockerize
 
 ## Implementation
 
@@ -49,4 +49,4 @@ The following top level milestones do not strictly depend on each other:
     * identify feature types
     * define mappings to CAS primitive types and/or integrate required SETH types into SethTypeSystem.xml
     
-- [ ] write unit test: produce UIMA json from input text
+- [x] write unit test: produce UIMA json from input text
