@@ -32,7 +32,8 @@ public class FIMDAController {
         //System.out.println("INIT AnalysisEngine");
 
         //get Resource Specifier from XML file
-        XMLInputSource in = new XMLInputSource("src/main/resources/desc/MutationAnnotator.xml");
+        //XMLInputSource in = new XMLInputSource("src/main/resources/desc/MutationAnnotator.xml");
+        XMLInputSource in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
 
         //create AE here
