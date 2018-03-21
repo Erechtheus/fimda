@@ -5,6 +5,7 @@ This file intends to document the integration of the software component “SNP E
 The focus rests on software development and integration.
 
 ## Milestones
+
 The following top level milestones do not strictly depend on each other:
 1. UIMA XMI data format serialization for SETH output
 2. SETH REST endpoint
@@ -12,8 +13,6 @@ The following top level milestones do not strictly depend on each other:
 
 ## Implementation
 
-### UIMA XMI serialization
-TODO:
 - [x] acquire general knowledge about UIMA XMI:
     * Analysis Engines (AEs) produce Analysis Results (ARs): [intro](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.aae)
     * *Annotators* (e.g. SETH) produce *Annotations*
