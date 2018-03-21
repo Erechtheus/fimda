@@ -27,7 +27,7 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
         //mLocations =
         //        (String[]) aContext.getConfigParameterValue("Locations");
 
-        //String mtRegex_filename = "src/main/resources/SETH/mutations.txt";
+        String mtRegex_filename = "src/main/resources/SETH/mutations.txt";
         //String mtRegex_filename = null;
         //try {
         //   File mtRegex_file = ResourceUtils.getFile("classpath:resources/SETH/mutations.txt");
@@ -36,7 +36,7 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
         //    System.out.println("can not load load mutations.txt, use default from SETH.");
         //    mtRegex_filename = "";
         //}
-        seth = new SETH("", true, true);
+        seth = new SETH(mtRegex_filename, true, true);
     }
 
     /**
@@ -67,7 +67,7 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
                 annotation.setWtResidue(mutation.getWtResidue());
                 annotation.setMtType(mutation.getType().toString());
                 annotation.setHgvs(mutation.toHGVS());
-                annotation.setAnTool("SETH_unused");
+                annotation.setAnTool("SETH");
                 annotation.addToIndexes();
 
             }
