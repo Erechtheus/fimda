@@ -26,4 +26,6 @@ Now, a rest service should be available at `http://localhost:8080/annotate`.
 
 Call it like: [http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met](http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met)
 
+Note: the input text (`p.A123T and Val158Met`) is url encoded.
+
 
