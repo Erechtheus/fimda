@@ -9,6 +9,11 @@
     <version>0.0.1-Snapshot</version>
     <packaging>jar</packaging>
 
+    <inceptionYear>2018</inceptionYear>
+    <organization>
+        <name>Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI GmbH)</name>
+    </organization>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -44,6 +49,7 @@
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <!-- release on github -->
         <release.github.description>Initial release</release.github.description>
+        <license.licenseName>apache_v2</license.licenseName>
     </properties>
 
     <developers>

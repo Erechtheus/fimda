@@ -57,5 +57,6 @@ The following top level milestones do not strictly depend on each other:
     * tag image as `latest`
     * use [maven plugin](https://github.com/spotify/dockerfile-maven): `mvn dockerfile:push -Ddockerfile.username=... -Ddockerfile.password=...`
 
-
+- [ ] license compliance
+    * create list of included/used packages
 - [ ] write how-to-integrate NER service (?)
