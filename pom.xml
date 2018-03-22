@@ -11,7 +11,7 @@
 
     <inceptionYear>2018</inceptionYear>
     <organization>
-        <name>Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI GmbH)</name>
+        <name>Deutsche Forschungszentrum für Künstliche Intelligenz (DFKI)</name>
     </organization>
 
     <parent>
@@ -82,7 +82,7 @@
             <version>1.3.1</version>
         </dependency>
 
-        <!-- UIMA for FIMDA -->
+        <!-- UIMA -->
         <dependency>
             <groupId>org.apache.uima</groupId>
             <artifactId>uimaj-core</artifactId>
@@ -94,7 +94,7 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- FIMDA: spring-mvc rest service -->
+        <!-- spring-mvc rest service -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -119,6 +119,7 @@
 
     <build>
         <resources>
+            <!-- add resources into classes folder to enable loading via classpath protocol -->
             <resource>
                 <targetPath>${basedir}/target/classes/resources</targetPath>
                 <directory>${basedir}/src/main/resources</directory>
@@ -203,30 +204,6 @@
                 </executions>
             </plugin>
 
-            <!-- aggregate the project output along with its dependencies, modules, site documentation, and other files into a single distributable archive-->
-            <!--<plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>de.dfki.lt.fimda.fimda.FIMDA</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-
             <!--  generate javadocs for the specified project -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -243,7 +220,17 @@
                 <version>2.9</version>
             </plugin>
 
-            <!-- release on github -->
+            <!-- release on github. Make sure that your local maven settings.xml file
+                 (default location: ~/.m2/settings.xml) exists and contains github credentials like:
+
+                    <servers>
+                        <server>
+                            <id>github</id>
+                            <username>GITHUB_USERNAME</username>
+                            <password>GITHUB_PASSWORD</password>
+                        </server>
+                    </servers>
+	         -->
             <plugin>
                 <groupId>de.jutzig</groupId>
                 <artifactId>github-release-plugin</artifactId>
@@ -268,7 +255,7 @@
                 </configuration>
             </plugin>
 
-            <!-- FIMDA: generate UIMA CAS type classes from description file -->
+            <!-- generate UIMA CAS type classes from description file -->
             <plugin>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>jcasgen-maven-plugin</artifactId>
@@ -290,7 +277,7 @@
                 </executions>
             </plugin>
 
-            <!-- FIMDA: spring boot -->
+            <!-- spring boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -317,6 +304,30 @@
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
+            </plugin>
+
+            <!-- apache 2 license compliance: add file headers -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.14</version>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <verbose>false</verbose>
+                            <addSvnKeyWords>false</addSvnKeyWords>
+                            <excludes>
+                                <!-- exclude test/resources/result.json -->
+                                <exclude>**/*.json</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
