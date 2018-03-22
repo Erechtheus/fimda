@@ -1,3 +1,4 @@
+#sudo required for docker
 sudo: required
 
 language: java
