@@ -1,5 +1,7 @@
 # FIMDA
 UIMA wrapper for [SETH](http://rockt.github.io/SETH/) with docker container and webservice
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Status](https://travis-ci.org/Erechtheus/fimda.svg?branch=master)](https://travis-ci.org/Erechtheus/fimda)
 
 # Usage
 
