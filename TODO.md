@@ -55,5 +55,7 @@ The following top level milestones do not strictly depend on each other:
     * choose "good" `docker.image.prefix`, currently it is "dfki"
     * create (?) docker account
     * tag image as `latest`
+    * use [maven plugin](https://github.com/spotify/dockerfile-maven): `mvn dockerfile:push -Ddockerfile.username=... -Ddockerfile.password=...`
+
 
 - [ ] write how-to-integrate NER service (?)
