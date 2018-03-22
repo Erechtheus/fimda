@@ -222,12 +222,18 @@
 
             <!-- release on github. Make sure that your local maven settings.xml file
                  (default location: ~/.m2/settings.xml) exists and contains github credentials like:
-
                     <servers>
                         <server>
                             <id>github</id>
                             <username>GITHUB_USERNAME</username>
                             <password>GITHUB_PASSWORD</password>
+                        </server>
+                    </servers>
+                 or
+                    <servers>
+                        <server>
+                            <id>github</id>
+                            <privateKey>DEPLOY_KEY</privateKey>
                         </server>
                     </servers>
 	         -->
@@ -259,13 +265,12 @@
             <plugin>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>jcasgen-maven-plugin</artifactId>
-                <version>3.0.0</version>  <!-- change this to the latest version -->
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <goals><goal>generate</goal></goals>  <!-- this is the only goal -->
                         <!-- runs in phase process-resources by default -->
                         <configuration>
-
                             <!-- REQUIRED -->
                             <typeSystemIncludes>
                                 <!-- one or more ant-like file patterns
