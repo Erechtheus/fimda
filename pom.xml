@@ -279,7 +279,7 @@
                         <configuration>
                             <!--<releaseName>${project.version}</releaseName>-->
                             <!--<tag>${project.version}</tag>-->
-                            <tag>${scm.tag}</tag>
+                            <tag>${project.artifactId}-${project.version}</tag>
                             <description>${release.github.description}</description>
                             <!--<artifact>${project.build.directory}/${project.groupId}.${project.artifactId}-${project.version}.jar</artifact>-->
                             <fileSets>
