@@ -288,7 +288,19 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- create docker image -->
+            <!-- create docker image and push to hub.docker.com
+                 Make sure that your local maven settings.xml file
+                 (default location: ~/.m2/settings.xml) exists and contains github credentials like:
+
+                 <servers>
+            	    <server>
+                        <id>hub.docker.com:8080</id>
+                        <username>DOCKER_HUB_ACCOUNT_NAME</username>
+                        <password>DOCKER_HUB_ACCOUNT_PASSWORD</password>
+                    </server>
+                </servers>
+
+            -->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
@@ -304,7 +316,10 @@
                 </executions>
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
+                    <!--<tag>${project.version}</tag>-->
+                    <!--<repository>hub.docker.com:8080/${docker.image.prefix}/${project.artifactId}</repository>-->
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <tag>latest</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
