@@ -4,7 +4,7 @@
 
     <groupId>de.dfki.lt.fimda</groupId>
     <artifactId>fimda</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <inceptionYear>2018</inceptionYear>
@@ -72,7 +72,7 @@
         <url>git@github.com:Erechtheus/fimda.git</url> <!-- https://github.com/Erechtheus/fimda -->
         <connection>scm:git:git@github.com:Erechtheus/fimda.git</connection>
         <developerConnection>scm:git:git@github.com:Erechtheus/fimda.git</developerConnection>
-      <tag>0.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>
