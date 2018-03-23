@@ -60,7 +60,7 @@
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <!-- release on github -->
         <release.github.description>Initial release</release.github.description>
-        <release.github.tag>fimda-0.0.1</release.github.tag>
+        <release.github.tag>Xfimda-0.0.1X</release.github.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
     </properties>
@@ -298,6 +298,16 @@
                 </executions>
 
 
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <!-- fix the tag name to the one used by github-release plugin -->
+                    <tagNameFormat>${release.github.tag}</tagNameFormat>
+                </configuration>
             </plugin>
 
             <!-- generate UIMA CAS type classes from description file -->
