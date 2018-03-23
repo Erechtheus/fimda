@@ -59,7 +59,9 @@
         <!-- site generation -->
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <!-- release on github -->
-        <release.github.description>Initial release</release.github.description>
+        <github-release.description>Initial release</github-release.description>
+        <github-release.tag>fimda-0.0.1</github-release.tag>
+        <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
     </properties>
 
@@ -279,8 +281,8 @@
                         <configuration>
                             <!--<releaseName>${project.version}</releaseName>-->
                             <!--<tag>${project.version}</tag>-->
-                            <tag>${project.artifactId}-${project.version}</tag>
-                            <description>${release.github.description}</description>
+                            <!--<tag>${project.artifactId}-${project.version}</tag>-->
+                            <!--<description>${release.github.description}</description>-->
                             <!--<artifact>${project.build.directory}/${project.groupId}.${project.artifactId}-${project.version}.jar</artifact>-->
                             <fileSets>
                                 <fileSet>
