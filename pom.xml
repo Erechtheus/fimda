@@ -41,7 +41,7 @@
     </issueManagement>
 
 
-    <profiles>
+    <!--<profiles>
         <profile>
             <id>JDK 8 Build</id>
             <activation>
@@ -51,7 +51,7 @@
                 <additionalparam>-Xdoclint:none</additionalparam>
             </properties>
         </profile>
-    </profiles>
+    </profiles>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
