@@ -41,15 +41,18 @@
     </issueManagement>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- If releasing to Docker Hub is intended, docker.image.prefix has to match the username
+             defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
-        <!-- site generation -->
-        <dependency.locations.enabled>false</dependency.locations.enabled>
-        <!-- release on github -->
+        <!-- release on github (and docker hub) -->
         <release.github.description>Initial release</release.github.description>
         <release.tag>0.0.1</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
+        <!-- avoid warnings regarding dependencies for site generation -->
+        <dependency.locations.enabled>false</dependency.locations.enabled>
+        <!-- set encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <developers>
@@ -289,7 +292,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
-                    <!-- fix the tag name to the one used by github-release plugin -->
+                    <!-- tangle the tag name with the name used by github-release plugin -->
                     <tagNameFormat>${release.tag}</tagNameFormat>
                 </configuration>
             </plugin>
@@ -332,7 +335,6 @@
                         <password>DOCKER_HUB_ACCOUNT_PASSWORD</password>
                     </server>
                 </servers>
-
             -->
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -359,8 +361,6 @@
                 </executions>
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <!--<tag>${project.version}</tag>-->
-                    <!--<repository>hub.docker.com:8080/${docker.image.prefix}/${project.artifactId}</repository>-->
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <tag>${release.tag}</tag>
                     <buildArgs>
