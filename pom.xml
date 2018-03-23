@@ -4,7 +4,7 @@
 
     <groupId>de.dfki.lt.fimda</groupId>
     <artifactId>fimda</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <inceptionYear>2018</inceptionYear>
@@ -60,7 +60,7 @@
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <!-- release on github -->
         <release.github.description>Initial release</release.github.description>
-        <release.github.tag>Xfimda-0.0.1X</release.github.tag>
+        <release.github.tag>fimda-0.0.1</release.github.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
     </properties>
