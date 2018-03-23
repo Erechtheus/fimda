@@ -19,10 +19,10 @@ or, to start via [docker](https://docs.docker.com/) (has to be installed), execu
 
 ```bash
 mvn package
-docker run -p 8080:8080 dfki/fimda:0.0.1-Snapshot
+docker run -p 8080:8080 dfki/fimda:latest
 ```
 
-Note: `mvn package` creates the local docker image `dfki/fimda:0.0.1-Snapshot`
+Note: `mvn package` creates the local docker image `dfki/fimda:latest`
 
 Now, a rest service should be available at `http://localhost:8080/annotate`. It requires the parameter `text` holding the input.
 
