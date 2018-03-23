@@ -42,12 +42,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <docker.image.prefix>dfki</docker.image.prefix>
+        <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- site generation -->
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <!-- release on github -->
         <release.github.description>Initial release</release.github.description>
-        <release.github.tag>0.0.1</release.github.tag>
+        <release.tag>0.0.1</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
     </properties>
@@ -266,8 +266,8 @@
                         </goals>
                         <inherited>false</inherited>
                         <configuration>
-                            <releaseName>${project.artifactId}-${release.github.tag}</releaseName>
-                            <tag>${release.github.tag}</tag>
+                            <releaseName>${project.artifactId}-${release.tag}</releaseName>
+                            <tag>${release.tag}</tag>
                             <description>${release.github.description}</description>
                             <!--<artifact>${project.build.directory}/${project.groupId}.${project.artifactId}-${project.version}.jar</artifact>-->
                             <fileSets>
@@ -282,8 +282,6 @@
                         </configuration>
                     </execution>
                 </executions>
-
-
             </plugin>
 
             <plugin>
@@ -292,7 +290,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <!-- fix the tag name to the one used by github-release plugin -->
-                    <tagNameFormat>${release.github.tag}</tagNameFormat>
+                    <tagNameFormat>${release.tag}</tagNameFormat>
                 </configuration>
             </plugin>
 
@@ -329,13 +327,47 @@
 
                  <servers>
             	    <server>
-                        <id>hub.docker.com:8080</id>
+                        <id>docker.io</id>
                         <username>DOCKER_HUB_ACCOUNT_NAME</username>
                         <password>DOCKER_HUB_ACCOUNT_PASSWORD</password>
                     </server>
                 </servers>
 
             -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-latest</id>
+                        <goals>
+                            <goal>tag</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <tag>latest</tag>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <!--<tag>${project.version}</tag>-->
+                    <!--<repository>hub.docker.com:8080/${docker.image.prefix}/${project.artifactId}</repository>-->
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <tag>${release.tag}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
 
 
             <!-- apache 2 license compliance: add file headers -->
