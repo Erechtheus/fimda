@@ -48,14 +48,16 @@ The following top level milestones do not strictly depend on each other:
     * identify relevant features
     * identify feature types
     * define mappings to CAS primitive types and/or integrate required SETH types into SethTypeSystem.xml
-    
 - [x] write unit test: produce UIMA json from input text (via [spring](https://spring.io/guides/gs/testing-web/))
-- [ ] create a release ([maven how-to](http://blog.soebes.de/blog/2016/08/08/maven-how-to-create-a-release/))
-- [ ] push image to Docker Hub
-    * choose "good" `docker.image.prefix`, currently it is "dfki"
-    * create (?) docker account
+- [x] create a release ([maven how-to](http://blog.soebes.de/blog/2016/08/08/maven-how-to-create-a-release/))
+    * push to github with [github-release-plugin](https://github.com/jutzig/github-release-plugin)
+    * NOTE: private key does not work! credentials has to be stored in maven settings.xml (calling the goal with system parameters during deploy does not work!)
+    * NOTE: to delete created (github) tags, execute in git root dir: `git tag -d 0.0.1 && git push --tags -f`
+- [x] push image to Docker Hub
+    * ~~choose "good" `docker.image.prefix`, currently it is "dfki":~~ has to be the username for docker hub
+    * create docker account
     * tag image as `latest`
-    * use [maven plugin](https://github.com/spotify/dockerfile-maven): `mvn dockerfile:push -Ddockerfile.username=... -Ddockerfile.password=...`
+    * use [maven plugin](https://github.com/spotify/dockerfile-maven): ~~`mvn dockerfile:push -Ddockerfile.username=... -Ddockerfile.password=...`~~ use `mvn release` with maven settings.xml holding credentials (but `-Ddockerfile.username=... -Ddockerfile.password=...` is still possible)
 - [x] license compliance
     * create list of included/used packages
 - [ ] write how-to-integrate NER service (?)
