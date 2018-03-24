@@ -5,24 +5,39 @@ UIMA wrapper for [SETH](http://rockt.github.io/SETH/) with docker container and 
 
 # Usage
 
-Requires [maven](https://maven.apache.org/index.html) and [git](https://git-scm.com/).
+## Start the Rest Service
 
-Clone this repo and switch into the directory:
+### Via Docker image from Docker Hub
+
+Requires [docker](https://docs.docker.com/). Execute:
+
+`docker run -p 8080:8080 erechtheus/fimda`
+
+### Via Spring Boot
+
+Requires [git](https://git-scm.com/) and [maven](https://maven.apache.org/index.html). Clone this repo and switch into the directory:
 
 `git clone https://github.com/Erechtheus/fimda.git && cd fimda`
 
-To start the service, execute:
+Compile and start the service:
 
 `mvn spring-boot:run`
 
-or, to start via [docker](https://docs.docker.com/) (has to be installed), execute:
+### Via local docker Image
 
-```bash
-mvn package
-docker run -p 8080:8080 dfki/fimda:latest
-```
+Requires [git](https://git-scm.com/), [maven](https://maven.apache.org/index.html) and [docker](https://docs.docker.com/). Clone this repo and switch into the directory:
 
-Note: `mvn package` creates the local docker image `dfki/fimda:latest`
+`git clone https://github.com/Erechtheus/fimda.git && cd fimda`
+
+Compile and create a local docker image (`erechtheus/fimda:latest`):
+
+`mvn package`
+
+Start the local docker image:
+
+`docker run -p 8080:8080 erechtheus/fimda`
+
+## Query the Rest Service
 
 Now, a rest service should be available at `http://localhost:8080/annotate`. It requires the parameter `text` holding the input.
 
@@ -30,7 +45,7 @@ Call it like: [http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met](ht
 
 Note: the input text (`p.A123T and Val158Met`) is url encoded.
 
-## License
+# License
 
 Copyright 2018 Deutsches Forschungszentrum für Künstliche Intelligenz
 
