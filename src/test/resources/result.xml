@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:xmi="http://www.omg.org/XMI" xmlns:fimda="http:///de/dfki/lt/fimda/fimda.ecore" xmlns:tcas="http:///uima/tcas.ecore" xmlns:cas="http:///uima/cas.ecore" xmi:version="2.0">
+    <cas:NULL xmi:id="0"/>
+    <tcas:DocumentAnnotation xmi:id="2" sofa="1" begin="0" end="21" language="x-unspecified"/>
+    <fimda:MutationAnnotation xmi:id="4" sofa="1" begin="0" end="7" mtType="SUBSTITUTION" wtResidue="A" mtResidue="T" mtPosition="123" anTool="SETH" hgvs="p.A123T"/>
+    <fimda:MutationAnnotation xmi:id="3" sofa="1" begin="12" end="21" mtType="SUBSTITUTION" wtResidue="V" mtResidue="M" mtPosition="158" anTool="SETH" hgvs="p.Val158Met"/>
+    <cas:Sofa xmi:id="1" sofaNum="1" sofaID="_InitialView" mimeType="text" sofaString="p.A123T and Val158Met"/>
+    <cas:View sofa="1" members="2 4 3"/>
+</xmi:XMI>

@@ -24,23 +24,28 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.impl.XmiCasDeserializer;
+import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.json.JsonCasSerializer;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+import org.apache.uima.util.XMLSerializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xml.sax.SAXException;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 public class FIMDAController {
@@ -71,11 +76,37 @@ public class FIMDAController {
         jcas = ae.newJCas();
     }
 
+    public StringWriter casToJson(JCas jc) throws IOException {
+        CAS cas = jc.getCas();
+        StringWriter sw = new StringWriter();
+        JsonCasSerializer jcs = new JsonCasSerializer();
+        jcs.setPrettyPrint(true); // do some configuration
+        jcs.serialize(cas, sw); // serialize into sw
+        return sw;
+    }
+
+    public StringWriter casToXmi(JCas jc) throws SAXException {
+        CAS cas = jc.getCas();
+        StringWriter sw = new StringWriter();
+        XmiCasSerializer ser = new XmiCasSerializer(cas.getTypeSystem());
+        XMLSerializer xmlSer = new XMLSerializer(sw, true);
+        ser.serialize(cas, xmlSer.getContentHandler());
+        return sw;
+    }
+
+    public JCas casFromXmi(String xmi) throws IOException, SAXException, ResourceInitializationException {
+        InputStream inputStream = new ByteArrayInputStream(xmi.getBytes(StandardCharsets.UTF_8));
+        JCas jc = ae.newJCas();
+        CAS cas = jc.getCas();
+        XmiCasDeserializer.deserialize(inputStream, cas, true);
+        return jc;
+    }
+
     @RequestMapping("/annotate")
-    public ResponseEntity<String> findMutations(@RequestParam(value="text", defaultValue="p.A123T and Val158Met") String text) {
+    public ResponseEntity<String> findMutations(@RequestParam(value="text", defaultValue="p.A123T and Val158Met") String text,
+                                                @RequestHeader(value=HttpHeaders.ACCEPT, defaultValue=MediaType.APPLICATION_XML_VALUE) List<MediaType> acceptHeaders) {
 
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         ResponseEntity<String> result;
 
         try {
@@ -83,15 +114,20 @@ public class FIMDAController {
             jcas.setDocumentText(text);
             ae.process(jcas);
             // serialize XCAS
-            CAS cas = jcas.getCas();
-            JsonCasSerializer jcs = new JsonCasSerializer();
-            jcs.setPrettyPrint(true); // do some configuration
-            StringWriter sw = new StringWriter();
-            jcs.serialize(cas, sw); // serialize into sw
-            result = new ResponseEntity<>(sw.toString(), httpHeaders, HttpStatus.OK);
-        } catch (AnalysisEngineProcessException | IOException e) {
+            if (acceptHeaders.stream().anyMatch(x -> x.includes(MediaType.APPLICATION_XML))){
+                httpHeaders.setContentType(MediaType.APPLICATION_XML);
+                result = new ResponseEntity<>(casToXmi(jcas).toString(), httpHeaders, HttpStatus.OK);
+            } else if (acceptHeaders.stream().anyMatch(x -> x.includes(MediaType.APPLICATION_JSON))){
+                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+                result = new ResponseEntity<>(casToJson(jcas).toString(), httpHeaders, HttpStatus.OK);
+            } else {
+                throw new IllegalArgumentException("'Accept' header has to include either " + MediaType.APPLICATION_XML_VALUE + " or " + MediaType.APPLICATION_JSON_VALUE + ", but it is: " + acceptHeaders);
+            }
+
+
+        } catch (AnalysisEngineProcessException | IOException | SAXException | IllegalArgumentException e) {
             //e.printStackTrace();
-            result = new ResponseEntity<>(e.toString(), httpHeaders, HttpStatus.BAD_REQUEST);
+            result = new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
         } finally {
             jcas.reset();
         }

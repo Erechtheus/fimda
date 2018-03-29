@@ -20,6 +20,7 @@ package de.dfki.lt.fimda.fimda;
  * #L%
  */
 
+import org.apache.uima.jcas.JCas;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,9 +51,17 @@ public class AnnotateRequestTest {
     public void annotateShouldReturnDefaultMessage() throws Exception {
 
         String text = "p.A123T and Val158Met";
-        List<String> lines = Files.readAllLines(Paths.get(this.getClass().getResource("/result.json").getFile()), StandardCharsets.UTF_8);
+        List<String> lines = Files.readAllLines(Paths.get(this.getClass().getResource("/result.xml").getFile()), StandardCharsets.UTF_8);
         String expectedResult = String.join("\n", lines);
+        String result = this.restTemplate.getForObject("http://localhost:" + port + "/annotate?text="+text, String.class);
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/annotate?text="+text, String.class)).isEqualToIgnoringWhitespace(expectedResult);
+        // convert to json (xml serialization can differ for equal inputs)
+        FIMDAController controller = new FIMDAController();
+        JCas expectedJCas = controller.casFromXmi(expectedResult);
+        String expectedJCasStr = controller.casToJson(expectedJCas).toString();
+        JCas jCas = controller.casFromXmi(result);
+        String jCasStr = controller.casToJson(jCas).toString();
+
+        assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
     }
 }

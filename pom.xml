@@ -387,7 +387,8 @@
                             <addSvnKeyWords>false</addSvnKeyWords>
                             <excludes>
                                 <!-- exclude test/resources/result.json -->
-                                <exclude>**/*.json</exclude>
+                                <exclude>**/result.json</exclude>
+                                <exclude>**/result.xml</exclude>
                             </excludes>
                         </configuration>
                     </execution>
