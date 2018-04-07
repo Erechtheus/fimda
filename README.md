@@ -45,7 +45,7 @@ Now, a rest service should be available at `http://localhost:8080/annotate`. It 
 
 Call it like: [http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met](http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met)
 
-Note: The input text (`p.A123T and Val158Met`) is **url encoded**.
+Note: The input text (in the example above: `p.A123T and Val158Met`) should be **url encoded**.
 
 The default **output format** is [UIMA XMI CAS](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.xmi). 
 If the endpoint receives an http `Accept` header that is compatible to `application/json`, 
