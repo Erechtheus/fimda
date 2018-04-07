@@ -5,6 +5,8 @@ UIMA wrapper for [SETH](http://rockt.github.io/SETH/) with docker container and 
 
 # Usage
 
+This wrapper exposes a REST service that can be queried by sending plain text to the endpoint (see [Query the Rest Service](#query-the-rest-service)).
+
 ## Start the Rest Service
 
 ### Via Docker image from Docker Hub
@@ -39,11 +41,19 @@ Start the local docker image:
 
 ## Query the Rest Service
 
-Now, a rest service should be available at `http://localhost:8080/annotate`. It requires the parameter `text` holding the input.
+Now, a rest service should be available at `http://localhost:8080/annotate`. It **requires** the parameter `text` holding the input.
 
 Call it like: [http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met](http://localhost:8080/annotate?text=p.A123T%20and%20Val158Met)
 
-Note: the input text (`p.A123T and Val158Met`) is url encoded.
+Note: The input text (`p.A123T and Val158Met`) is **url encoded**.
+
+The default **output format** is [UIMA XMI CAS](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.xmi). 
+If the endpoint receives an http `Accept` header that is compatible to `application/json`, 
+[JSON CAS Serialization](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.json) is used.
+
+Note: XMI serialization has higher precedence, so ensure that your request does not additionally contain an `Accept` header 
+that is compatible to `application/xml` (i.e. `*/*`), if you want to get json back.
+
 
 # License
 
