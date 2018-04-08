@@ -11,8 +11,9 @@ That intend requires to solve the following main issues:
 ## Integration into UIMA architecture
 
 In its core, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. 
-Both can be defined via *descriptor files* that are later used to generate respective Java classes. Then, objects of these classes are called to 
-See [Defining CAS-transported custom Java objects](https://uima.apache.org/d/uimaj-3.0.0/version_3_users_guide.html#uv3.custom_java_objects) for further information
+Both can be defined via *descriptor files* that are later used to generate respective Java classes for annotations 
+and annotator engines. Then, objects of these classes are called to produce annotation entities in the required formats.
+See [Getting Started](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.aae.getting_started) for the UIMA step-by-step tutorial, [Defining CAS-transported custom Java objects](https://uima.apache.org/d/uimaj-3.0.0/version_3_users_guide.html#uv3.custom_java_objects) for further information regarding CAS
 or [UIMA Conceptual Overview](https://uima.apache.org/d/uimaj-3.0.0/overview_and_setup.html#ugr.ovv.conceptual) for a more general introduction to UIMA.
 
 ### Defining Descriptor Files
@@ -24,11 +25,14 @@ Descriptor files define UIMA interfaces in xml. At least, two descriptor files a
 See [Introduction to Analysis Engine Descriptor XML Syntax](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.aae.xml_intro_ae_descriptor) for another example and further information.
 
 Having this, the UIMA tool `JCasGen` can be used to generate the required classes. 
-This tool can be applied automatically in the maven pipeline.
+This tool can be applied automatically in a maven pipeline (see [jcasgen-maven-plugin](https://mvnrepository.com/artifact/org.apache.uima/jcasgen-maven-plugin)).
 
 ### The Annotator Class
 
-TODO
+The annotator class guides the construction of an annotation object. It has to implement the interface functions 
+`initialize`, `process` and `destroy`. For simplicity, it should inherit from 
+`org.apache.uima.analysis_component.JCasAnnotator_ImplBase` to get some base functionality out of the box as default 
+implementations of `initialize` and `destroy`.
 
 ### Calling the Annotator
 
