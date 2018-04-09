@@ -10,9 +10,9 @@ release to github and docker-hub
      <servers>
         ...
         <server>
-	        <id>github</id>
-			<username>GITHUB_USERNAME</username>
-        	<password>GITHUB_PASSWORD</password>
+            <id>github</id>
+            <username>GITHUB_USERNAME</username>
+            <password>GITHUB_PASSWORD</password>
         </server>
         ...
      </servers>
