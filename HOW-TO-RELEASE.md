@@ -17,7 +17,8 @@ release to github and docker-hub
         ...
      </servers>
   ```
-3. Docker Hub credentials in maven `settings.xml` located in `~/.m2` (used by `dockerfile-maven-plugin`):
+3. Docker Hub credentials for `erechtheus/fimda`(`${docker.image.prefix}/${project.artifactId}`, see [pom.xml](/pom.xml)) 
+in maven `settings.xml` located in `~/.m2` (used by `dockerfile-maven-plugin`):
   ```xml
      <servers>
         ...
@@ -32,7 +33,7 @@ release to github and docker-hub
   
 ## Prepare & Release
 
-1. In [pom.xml](/pom.xml) set the properties: `<release.github.description>RELEASE_DESCRIPTION</release.github.description>` 
+1. In the [pom.xml](/pom.xml) set the `properties`: `<release.github.description>RELEASE_DESCRIPTION</release.github.description>` 
 and `<release.tag>RELEASE_VERSION</release.tag>`.
 2. Commit and push to github.
 3. From project root, execute: `mvn release:prepare release:perform --batch-mode`
