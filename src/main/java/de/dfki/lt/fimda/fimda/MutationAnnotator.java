@@ -41,21 +41,7 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
             throws ResourceInitializationException {
         super.initialize(aContext);
 
-        // Get config. parameter values
-        //String[] patternStrings =
-        //        (String[]) aContext.getConfigParameterValue("Patterns");
-        //mLocations =
-        //        (String[]) aContext.getConfigParameterValue("Locations");
-
         String mtRegex_filename = "src/main/resources/SETH/mutations.txt";
-        //String mtRegex_filename = null;
-        //try {
-        //   File mtRegex_file = ResourceUtils.getFile("classpath:resources/SETH/mutations.txt");
-        //    mtRegex_filename = mtRegex_file.getAbsolutePath();
-        //} catch (FileNotFoundException e) {
-        //    System.out.println("can not load load mutations.txt, use default from SETH.");
-        //    mtRegex_filename = "";
-        //}
         seth = new SETH(mtRegex_filename, true, true);
     }
 

@@ -55,15 +55,13 @@ public class FIMDAController {
 
     FIMDAController() throws IOException, InvalidXMLException, ResourceInitializationException {
 
-        //System.out.println("INIT AnalysisEngine");
-
         //get Resource Specifier from XML file
-        //XMLInputSource in = new XMLInputSource("src/main/resources/desc/MutationAnnotator.xml");
         XMLInputSource in;
         try {
             String fn = getClass().getResource("/resources/desc/MutationAnnotator.xml").getFile();
             in = new XMLInputSource(fn);
         } catch (FileNotFoundException e){
+            // in the compiled jar, the resource files are moved into the classes folder via maven
             in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
         }
 
@@ -76,6 +74,7 @@ public class FIMDAController {
         jcas = ae.newJCas();
     }
 
+    // public, so it can be used in tests
     public StringWriter casToJson(JCas jc) throws IOException {
         CAS cas = jc.getCas();
         StringWriter sw = new StringWriter();
@@ -85,6 +84,7 @@ public class FIMDAController {
         return sw;
     }
 
+    // public, so it can be used in tests
     public StringWriter casToXmi(JCas jc) throws SAXException {
         CAS cas = jc.getCas();
         StringWriter sw = new StringWriter();
@@ -94,6 +94,7 @@ public class FIMDAController {
         return sw;
     }
 
+    // public, so it can be used in tests
     public JCas casFromXmi(String xmi) throws IOException, SAXException, ResourceInitializationException {
         InputStream inputStream = new ByteArrayInputStream(xmi.getBytes(StandardCharsets.UTF_8));
         JCas jc = ae.newJCas();
@@ -103,8 +104,11 @@ public class FIMDAController {
     }
 
     @RequestMapping("/annotate")
-    public ResponseEntity<String> findMutations(@RequestParam(value="text", defaultValue="p.A123T and Val158Met") String text,
-                                                @RequestHeader(value=HttpHeaders.ACCEPT, defaultValue=MediaType.APPLICATION_XML_VALUE) List<MediaType> acceptHeaders) {
+    public ResponseEntity<String> findMutations(
+            @RequestParam(value="text", defaultValue="p.A123T and Val158Met")
+                    String text,
+            @RequestHeader(value=HttpHeaders.ACCEPT, defaultValue=MediaType.APPLICATION_XML_VALUE)
+                    List<MediaType> acceptHeaders) {
 
         final HttpHeaders httpHeaders = new HttpHeaders();
         ResponseEntity<String> result;
@@ -114,9 +118,12 @@ public class FIMDAController {
             jcas.setDocumentText(text);
             ae.process(jcas);
             // serialize XCAS
+            // If any of the HTTP accept headers is compatible to `application/xml`, serialize to XML.
+            // That is also the default, if no accept header is present (see acceptHeaders parameter annotation).
             if (acceptHeaders.stream().anyMatch(x -> x.includes(MediaType.APPLICATION_XML))){
                 httpHeaders.setContentType(MediaType.APPLICATION_XML);
                 result = new ResponseEntity<>(casToXmi(jcas).toString(), httpHeaders, HttpStatus.OK);
+            // Otherwise, if any of the HTTP accept headers is compatible to `application/json`, serialize to JSON.
             } else if (acceptHeaders.stream().anyMatch(x -> x.includes(MediaType.APPLICATION_JSON))){
                 httpHeaders.setContentType(MediaType.APPLICATION_JSON);
                 result = new ResponseEntity<>(casToJson(jcas).toString(), httpHeaders, HttpStatus.OK);
