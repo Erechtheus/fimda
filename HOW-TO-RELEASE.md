@@ -33,9 +33,11 @@ in maven `settings.xml` located in `~/.m2` (used by `dockerfile-maven-plugin`):
   
 ## Prepare & Release
 
-1. In the [pom.xml](/pom.xml) set the `properties`: `<release.github.description>RELEASE_DESCRIPTION</release.github.description>` 
-and `<release.tag>RELEASE_VERSION</release.tag>`.
-2. Commit and push to github.
-3. From project root, execute: `mvn release:prepare release:perform --batch-mode`
+1. In the [pom.xml](/pom.xml): 
+    * set the property `<release.github.description>RELEASE_DESCRIPTION</release.github.description>` and
+    * set the property `<release.tag>RELEASE_VERSION</release.tag>`.
+    * ensure that `project.version` is `RELEASE_VERSION-SNAPSHOT`. If not, set it to this value.
+3. Commit and push to github.
+4. From project root, execute: `mvn release:prepare release:perform --batch-mode`
 
 
