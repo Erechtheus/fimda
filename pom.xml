@@ -45,8 +45,8 @@
              defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
-        <release.github.description>Added XMI serialization (default)</release.github.description>
-        <release.tag>0.1.0</release.tag>
+        <release.github.description>bug fix 3fc94e84013e4d1826c1a1881ea15d3a36ed9c12</release.github.description>
+        <release.tag>0.1.1</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->
