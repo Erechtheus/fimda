@@ -51,14 +51,14 @@ has to be instantiated using an annotator description file (see `Annotator.xml` 
 The AE is used to create a (J)CAS object that provides the annotation functionality which can be serialized into 
 UIMA XMI or other output formats like JSON. 
 
-For this intend, the constructor of [FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java) 
+For this intend, the constructor of [FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java#L56-L75) 
 implements the following: a `ResourceSpecifier` is created from `MutationAnnotator.xml` that is further used to
 instantiate an `AnalysisEngine` object by calling `UIMAFramework.produceAnalysisEngine`. The function `newJCas` of the
 AE object gives the JCAS object.
 
 To process content, the reference text of the JCAS object is set via `setDocumentText` and `process` executes the 
 functionality defined above with respect to the reference text. See function `findMutations` of 
-[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java). Finally, the functions 
+[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java#L106-L144). Finally, the functions 
 `casToXmi` and `casToJson` implement the serialization of the JCAS object.
 
 ## The REST service
@@ -69,7 +69,7 @@ as described in [this guide](https://spring.io/guides/gs/rest-service/).
 
 To create a GET endpoint at URL `/annotate` that returns annotations for a given text, the annotation function that 
 produces (and serializes) the JCAS, `findMutations` (see 
-[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java)), is annotated  with 
+[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java#L106-L144)), is annotated  with 
 `@RequestMapping("/annotate")` and its input  parameter `text` with `@RequestParam(value="text")`. To return specific 
 HTTP headers, status and error messages  (if necessary), the serialized JCAS is wrapped into a `ResponseEntity` as return value. 
 Furthermore, the `FIMDAController` (the class that contains `findMutations`) has to be annotated with `@RestController`.
