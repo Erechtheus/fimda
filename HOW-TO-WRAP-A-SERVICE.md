@@ -51,7 +51,7 @@ has to be instantiated using an annotator description file (see `Annotator.xml` 
 The AE is used to create a (J)CAS object that provides the annotation functionality which can be serialized into 
 UIMA XMI or other output formats like JSON. 
 
-For this intend, the constructor of [MutationAnnotator.java](/src/main/java/de/dfki/lt/fimda/fimda/MutationAnnotator.java) 
+For this intend, the constructor of [FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java) 
 implements the following: a `ResourceSpecifier` is created from `MutationAnnotator.xml` that is further used to
 instantiate an `AnalysisEngine` object by calling `UIMAFramework.produceAnalysisEngine`. The function `newJCas` of the
 AE object gives the JCAS object.
@@ -80,5 +80,10 @@ just calling `SpringApplication.run` in its main method.
 Assuming the project is created with maven and having set the required dependencies (at least `uimaj-core`, 
 `spring-boot-starter-web` and `org.springframework.boot`) and `jcasgen-maven-plugin` in the `build/plugin` section to 
 generate the UIMA classes from description files on the fly (see [pom.xml](/pom.xml) for all maven settings), 
-the REST service can be started by executing `mvn spring-boot:run`. It should handle requests to 
-`http://localhost:8080/annotate`.
+the REST service can be started by executing: 
+
+```bash
+mvn spring-boot:run
+``` 
+
+It should handle requests to `http://localhost:8080/annotate`.
