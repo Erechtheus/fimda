@@ -68,9 +68,10 @@ combination with [spring-boot](https://projects.spring.io/spring-boot/) provides
 as described in [this guide](https://spring.io/guides/gs/rest-service/).
 
 To create a GET endpoint at URL `/annotate` that returns annotations for a given text, the annotation function that 
-produces (and serializes) the JCAS, `findMutations`, is annotated  with `@RequestMapping("/annotate")` and its input 
-parameter `text` with `@RequestParam(value="text")`. To return specific HTTP headers, status and error messages 
-(if necessary), the serialized JCAS is wrapped into a `ResponseEntity` as return value. 
+produces (and serializes) the JCAS, `findMutations` (see 
+[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java)), is annotated  with 
+`@RequestMapping("/annotate")` and its input  parameter `text` with `@RequestParam(value="text")`. To return specific 
+HTTP headers, status and error messages  (if necessary), the serialized JCAS is wrapped into a `ResponseEntity` as return value. 
 Furthermore, the `FIMDAController` (the class that contains `findMutations`) has to be annotated with `@RestController`.
 To finally create an execution entry for the app, the package containing the controller class (`FIMDAController`) has 
 to implement a class annotated with `@SpringBootApplication` (see [FIMDA.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDA.java))
