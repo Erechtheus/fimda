@@ -4,7 +4,7 @@ This document explains how to create a simple REST service that complies to the
 [UIMA CAS (Common Analysis Structure)](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.cas) 
 interface from a given Java NLP service. It uses the FIMDA service implemented within this repository as vivid example.
 
-That intend requires to solve the following main issues:
+This intend requires to solve the following main issues:
 1) Integration of the given NLP service/tool into the UIMA architecture 
 2) Creation of a REST service that receives (textual) input and returns annotations in CAS format
 
@@ -12,7 +12,7 @@ That intend requires to solve the following main issues:
 
 In its core, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. 
 Both can be defined via *descriptor files* that are later used to generate respective Java classes for annotations 
-and annotator engines. Then, objects of these classes are called to produce annotation entities in the required formats.
+and annotator engines. Objects of these classes are called to produce annotation entities in the required format.
 
 See [Getting Started](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.aae.getting_started) for the UIMA step-by-step tutorial, [Defining CAS-transported custom Java objects](https://uima.apache.org/d/uimaj-3.0.0/version_3_users_guide.html#uv3.custom_java_objects) for further information regarding CAS
 or [UIMA Conceptual Overview](https://uima.apache.org/d/uimaj-3.0.0/overview_and_setup.html#ugr.ovv.conceptual) for a more general introduction to UIMA.
@@ -47,18 +47,19 @@ calling `annotation.addToIndexes()`.
 
 To annotate some textual input, an 
 [UIMA analysis engine (AE)](https://uima.apache.org/d/uimaj-3.0.0/overview_and_setup.html#ugr.ovv.conceptual.aes_annotators_and_analysis_results) 
-has to be instantiated using an annotator description file (see `Annotator.xml` [above](#defining-descriptor-files)). 
+has to be instantiated using an annotator description file (see `Annotator.xml` from [above](#defining-descriptor-files)). 
 The AE is used to create a (J)CAS object that provides the annotation functionality which can be serialized into 
 UIMA XMI or other output formats like JSON. 
 
-For this intend, the constructor of [MutationAnnotator.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java) 
+For this intend, the constructor of [MutationAnnotator.java](/src/main/java/de/dfki/lt/fimda/fimda/MutationAnnotator.java) 
 implements the following: a `ResourceSpecifier` is created from `MutationAnnotator.xml` that is further used to
 instantiate an `AnalysisEngine` object by calling `UIMAFramework.produceAnalysisEngine`. The function `newJCas` of the
 AE object gives the JCAS object.
 
 To process content, the reference text of the JCAS object is set via `setDocumentText` and `process` executes the 
-functionality defined above. See function `findMutations` of [MutationAnnotator.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java)). 
-Finally, the functions `casToXmi` and `casToJson` implement the serialization of the JCAS object.
+functionality defined above with respect to the reference text. See function `findMutations` of 
+[FIMDAController.java](/src/main/java/de/dfki/lt/fimda/fimda/FIMDAController.java). Finally, the functions 
+`casToXmi` and `casToJson` implement the serialization of the JCAS object.
 
 ## The REST service
 
@@ -78,5 +79,5 @@ just calling `SpringApplication.run` in its main method.
 Assuming the project is created with maven and having set the required dependencies (at least `uimaj-core`, 
 `spring-boot-starter-web` and `org.springframework.boot`) and `jcasgen-maven-plugin` in the `build/plugin` section to 
 generate the UIMA classes from description files on the fly (see [pom.xml](/pom.xml) for all maven settings), 
-the REST service can be started by executing `mvn spring-boot:run` and should accept requests to 
+the REST service can be started by executing `mvn spring-boot:run`. It should handle requests to 
 `http://localhost:8080/annotate`.
