@@ -20,46 +20,30 @@ package de.dfki.lt.fimda.fimda;
  * #L%
  */
 
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.xml.sax.SAXException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FIMDAServiceTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
+public class FIMDATest {
 
     @Test
-    public void annotateShouldReturnDefaultMessage() throws Exception {
+    public void testMain() throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
 
-        String text = "p.A123T and Val158Met";
-        //List<String> lines = Files.readAllLines(Paths.get(this.getClass().getResource("/result.xml").getFile()), StandardCharsets.UTF_8);
-        //String expectedResult = String.join("\n", lines);
-        String result = this.restTemplate.getForObject("http://localhost:" + port + "/annotate?text="+text, String.class);
-        // create temp result file
+        FIMDA fimda = new FIMDA();
+        Path pathIn = Paths.get(this.getClass().getResource("/input.xml").getFile());
         Path tempPath = Paths.get("./result_temp.xml");
-        Files.write(tempPath, result.getBytes());
+        fimda.annotateXmiToXmi(pathIn, tempPath);
 
         try {
             // convert to json (xml serialization can differ for equal inputs)
-            //FIMDAController controller = new FIMDAController();
-            FIMDA fimda = new FIMDA();
             fimda.casFromXmi(Paths.get(this.getClass().getResource("/result.xml").getFile()));
             String expectedJCasStr = fimda.casToJson().toString();
             fimda.resetCas();
@@ -73,9 +57,5 @@ public class FIMDAServiceTest {
             Files.delete(tempPath);
         }
 
-    }
-
-    @Test
-    public void contextLoads() throws Exception {
     }
 }

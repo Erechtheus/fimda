@@ -36,7 +36,6 @@ import org.apache.uima.util.XMLSerializer;
 import org.xml.sax.SAXException;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -107,25 +106,30 @@ public class FIMDA {
         jcas.reset();
     }
 
+    public void annotateXmiToXmi(Path pathIn, Path pathOut) throws ResourceInitializationException, SAXException, IOException {
+
+        System.out.println("annotate input from CAS XMI file '"+ pathIn);
+        casFromXmi(pathIn);
+        try {
+            process();
+            StringWriter resultXmi = casToXmi();
+            System.out.println("write result as CAS XMI to '" + pathOut + "'");
+            Files.write(pathOut, resultXmi.toString().getBytes());
+        } catch (AnalysisEngineProcessException | SAXException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            resetCas();
+        }
+    }
+
     public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
         if (args.length < 2) {
             System.err.println("Not enough arguments. Please provide one input file path and one output file path.");
             return;
         }
+        FIMDA fimda = new FIMDA();
         Path pathIn = Paths.get(args[0]);
         Path pathOut = Paths.get(args[1]);
-        System.out.println("annotate input from CAS XMI file '"+ pathIn);
-        FIMDA fimda = new FIMDA();
-        fimda.casFromXmi(pathIn);
-        try {
-            fimda.process();
-            StringWriter resultXmi = fimda.casToXmi();
-            System.out.println("write result as CAS XMI to '" + pathOut + "'");
-            Files.write(pathOut, resultXmi.toString().getBytes());
-        } catch (AnalysisEngineProcessException e) {
-            e.printStackTrace();
-        } finally {
-            fimda.resetCas();
-        }
+        fimda.annotateXmiToXmi(pathIn, pathOut);
     }
 }
