@@ -37,6 +37,9 @@ import org.xml.sax.SAXException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FIMDA {
 
@@ -49,7 +52,7 @@ public class FIMDA {
         try {
             String fn = getClass().getResource("/resources/desc/MutationAnnotator.xml").getFile();
             in = new XMLInputSource(fn);
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             // in the compiled jar, the resource files are moved into the classes folder via maven
             in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
         }
@@ -84,27 +87,19 @@ public class FIMDA {
     }
 
     // public, so it can be used in tests
-    private void casFromXmi(String xmi) throws IOException, SAXException, ResourceInitializationException {
-        InputStream inputStream = new ByteArrayInputStream(xmi.getBytes(StandardCharsets.UTF_8));
+    public void casFromXmi(Path path) throws IOException, SAXException, ResourceInitializationException {
+        InputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(path));
         jcas = ae.newJCas();
         CAS cas = jcas.getCas();
         XmiCasDeserializer.deserialize(inputStream, cas, true);
     }
 
-    private void casFromText(String text) throws ResourceInitializationException {
+    public void casFromText(String text) throws ResourceInitializationException {
         jcas = ae.newJCas();
         jcas.setDocumentText(text);
     }
 
-    public void annotateTextPlain(String text) throws AnalysisEngineProcessException, ResourceInitializationException {
-        casFromText(text);
-        //analyze a document
-        ae.process(jcas);
-    }
-
-    public void annotateXmi(String xmi) throws AnalysisEngineProcessException, ResourceInitializationException, SAXException, IOException {
-        casFromXmi(xmi);
-        //analyze a document
+    public void process() throws AnalysisEngineProcessException {
         ae.process(jcas);
     }
 
@@ -112,4 +107,25 @@ public class FIMDA {
         jcas.reset();
     }
 
+    public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+        if (args.length < 2) {
+            System.err.println("Not enough arguments. Please provide one input file path and one output file path.");
+            return;
+        }
+        Path pathIn = Paths.get(args[0]);
+        Path pathOut = Paths.get(args[1]);
+        System.out.println("annotate input from CAS XMI file '"+ pathIn);
+        FIMDA fimda = new FIMDA();
+        fimda.casFromXmi(pathIn);
+        try {
+            fimda.process();
+            StringWriter resultXmi = fimda.casToXmi();
+            System.out.println("write result as CAS XMI to '" + pathOut + "'");
+            Files.write(pathOut, resultXmi.toString().getBytes());
+        } catch (AnalysisEngineProcessException e) {
+            e.printStackTrace();
+        } finally {
+            fimda.resetCas();
+        }
+    }
 }

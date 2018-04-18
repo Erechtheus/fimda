@@ -29,8 +29,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -50,21 +52,30 @@ public class FIMDAServiceTest {
     public void annotateShouldReturnDefaultMessage() throws Exception {
 
         String text = "p.A123T and Val158Met";
-        List<String> lines = Files.readAllLines(Paths.get(this.getClass().getResource("/result.xml").getFile()), StandardCharsets.UTF_8);
-        String expectedResult = String.join("\n", lines);
+        //List<String> lines = Files.readAllLines(Paths.get(this.getClass().getResource("/result.xml").getFile()), StandardCharsets.UTF_8);
+        //String expectedResult = String.join("\n", lines);
         String result = this.restTemplate.getForObject("http://localhost:" + port + "/annotate?text="+text, String.class);
+        // create temp result file
+        Path tempPath = Paths.get("./result_temp.xml");
+        Files.write(tempPath, result.getBytes());
 
-        // convert to json (xml serialization can differ for equal inputs)
-        //FIMDAController controller = new FIMDAController();
-        FIMDA fimda = new FIMDA();
-        fimda.annotateXmi(expectedResult);
-        String expectedJCasStr = fimda.casToJson().toString();
-        fimda.resetCas();
-        fimda.annotateXmi(result);
-        String jCasStr = fimda.casToJson().toString();
-        fimda.resetCas();
+        try {
+            // convert to json (xml serialization can differ for equal inputs)
+            //FIMDAController controller = new FIMDAController();
+            FIMDA fimda = new FIMDA();
+            fimda.casFromXmi(Paths.get(this.getClass().getResource("/result.xml").getFile()));
+            String expectedJCasStr = fimda.casToJson().toString();
+            fimda.resetCas();
+            fimda.casFromXmi(tempPath);
+            String jCasStr = fimda.casToJson().toString();
+            fimda.resetCas();
 
-        assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
+            assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
+        } finally {
+            // delete temp result file
+            Files.delete(tempPath);
+        }
+
     }
 
     @Test

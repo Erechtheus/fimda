@@ -56,7 +56,8 @@ public class FIMDAController {
         ResponseEntity<String> result;
 
         try {
-            fimda.annotateTextPlain(text);
+            fimda.casFromText(text);
+            fimda.process();
 
             // serialize XCAS
             // If any of the HTTP accept headers is compatible to `application/xml`, serialize to XML.
