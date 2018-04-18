@@ -34,6 +34,7 @@ import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.xml.sax.SAXException;
+import org.apache.commons.cli.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -123,13 +124,34 @@ public class FIMDA {
     }
 
     public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
-        if (args.length < 2) {
-            System.err.println("Not enough arguments. Please provide one input file path and one output file path.");
+        Options options = new Options();
+
+        Option input = new Option("i", "input", true, "input CAS XMI file path");
+        input.setRequired(true);
+        options.addOption(input);
+
+        Option output = new Option("o", "output", true, "output CAS XMI file");
+        output.setRequired(true);
+        options.addOption(output);
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine cmd;
+
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("FIMDA", options);
+
+            System.exit(1);
             return;
         }
+
+
         FIMDA fimda = new FIMDA();
-        Path pathIn = Paths.get(args[0]);
-        Path pathOut = Paths.get(args[1]);
+        Path pathIn = Paths.get(cmd.getOptionValue("input"));
+        Path pathOut = Paths.get(cmd.getOptionValue("output"));
         fimda.annotateXmiToXmi(pathIn, pathOut);
     }
 }
