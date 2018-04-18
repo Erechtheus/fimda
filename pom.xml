@@ -12,12 +12,6 @@
         <name>Deutsche Forschungszentrum für Künstliche Intelligenz (DFKI)</name>
     </organization>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RELEASE</version>
-    </parent>
-
     <name>FIMDA: Finding Mutations in the Digital Age</name>
     <description>
         UIMA wrapper for SETH with docker container and webservice
@@ -46,7 +40,7 @@
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
         <release.github.description>bug fix 3fc94e84013e4d1826c1a1881ea15d3a36ed9c12</release.github.description>
-        <release.tag>0.1.1</release.tag>
+        <release.tag>0.1.2</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->
@@ -98,26 +92,26 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- spring-mvc rest service -->
+        <!-- testing -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.9.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.25</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 
@@ -184,6 +178,27 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- create "fat" jar (includes dependencies) with entry class -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>de.dfki.lt.fimda.fimda.FIMDA</mainClass>
+                        </transformer>
+                    </transformers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -318,11 +333,6 @@
                 </executions>
             </plugin>
 
-            <!-- spring boot -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
 
             <!-- create docker image and push to hub.docker.com
                  Make sure that your local maven settings.xml file
