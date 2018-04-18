@@ -20,7 +20,6 @@ package de.dfki.lt.fimda.fimda;
  * #L%
  */
 
-import org.apache.uima.jcas.JCas;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AnnotateRequestTest {
+public class FIMDAServiceTest {
 
     @LocalServerPort
     private int port;
@@ -56,12 +55,19 @@ public class AnnotateRequestTest {
         String result = this.restTemplate.getForObject("http://localhost:" + port + "/annotate?text="+text, String.class);
 
         // convert to json (xml serialization can differ for equal inputs)
-        FIMDAController controller = new FIMDAController();
-        JCas expectedJCas = controller.casFromXmi(expectedResult);
-        String expectedJCasStr = controller.casToJson(expectedJCas).toString();
-        JCas jCas = controller.casFromXmi(result);
-        String jCasStr = controller.casToJson(jCas).toString();
+        //FIMDAController controller = new FIMDAController();
+        FIMDA fimda = new FIMDA();
+        fimda.annotateXmi(expectedResult);
+        String expectedJCasStr = fimda.casToJson().toString();
+        fimda.resetCas();
+        fimda.annotateXmi(result);
+        String jCasStr = fimda.casToJson().toString();
+        fimda.resetCas();
 
         assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
+    }
+
+    @Test
+    public void contextLoads() throws Exception {
     }
 }

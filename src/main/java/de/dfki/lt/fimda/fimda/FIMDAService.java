@@ -20,17 +20,13 @@ package de.dfki.lt.fimda.fimda;
  * #L%
  */
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class FIMDATest {
+@SpringBootApplication
+public class FIMDAService {
 
-    @Test
-    public void contextLoads() throws Exception {
+    public static void main(String[] args) {
+        SpringApplication.run(FIMDAService.class, args);
     }
-
 }
