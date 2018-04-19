@@ -4,7 +4,7 @@
 
     <groupId>de.dfki.lt.fimda</groupId>
     <artifactId>fimda</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <inceptionYear>2018</inceptionYear>
@@ -39,8 +39,8 @@
              defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
-        <release.github.description>bug fix 3fc94e84013e4d1826c1a1881ea15d3a36ed9c12</release.github.description>
-        <release.tag>0.1.2</release.tag>
+        <release.github.description>removed REST service in favour of one time executable docker as requested by OpenMinTeD (see https://openminted.github.io/releases/docker-spec/1.0.0/specification)</release.github.description>
+        <release.tag>0.2.0</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->
