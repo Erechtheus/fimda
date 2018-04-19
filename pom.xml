@@ -124,6 +124,14 @@
     </dependencies>
 
     <build>
+        <resources>
+            <!-- add resources into classes folder to enable loading via classpath protocol -->
+            <resource>
+                <targetPath>${basedir}/target/classes/resources</targetPath>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
             <!--  creates a jar archive of the source files of the current project-->
             <plugin>
