@@ -39,8 +39,8 @@
              defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
-        <release.github.description>removed REST service in favour of one time executable docker as requested by OpenMinTeD (see https://openminted.github.io/releases/docker-spec/1.0.0/specification)</release.github.description>
-        <release.tag>0.2.0</release.tag>
+        <release.github.description>fixed loading of descriptor files</release.github.description>
+        <release.tag>0.2.1</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->
@@ -124,14 +124,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <!-- add resources into classes folder to enable loading via classpath protocol -->
-            <resource>
-                <targetPath>${basedir}/target/classes/resources</targetPath>
-                <directory>${basedir}/src/main/resources</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <!--  creates a jar archive of the source files of the current project-->
             <plugin>

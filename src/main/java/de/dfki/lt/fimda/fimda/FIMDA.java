@@ -37,10 +37,10 @@ import org.xml.sax.SAXException;
 import org.apache.commons.cli.*;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-//import java.util.stream.Collectors;
 
 public class FIMDA {
 
@@ -50,21 +50,9 @@ public class FIMDA {
     FIMDA() throws IOException, InvalidXMLException, ResourceInitializationException {
         //get Resource Specifier from XML file
         XMLInputSource in;
-        try {
-            String fn = getClass().getResource("/resources/desc/MutationAnnotator.xml").getFile();
-            System.out.println(fn);
-            in = new XMLInputSource(fn);
-        } catch (FileNotFoundException e) {
-            InputStream ins = getClass().getResourceAsStream("/resources/desc/MutationAnnotator.xml");
-            //BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
-            //System.out.println(reader.lines().collect(Collectors.joining()));
-
-            // TODO: seems to work?
-            // in the compiled jar, the resource files are moved into the classes folder via maven
-            //in = new XMLInputSource("classpath:resources/desc/MutationAnnotator.xml");
-            in = new XMLInputSource(ins, null);
-        }
-
+        URL url = getClass().getResource("/resources/desc/MutationAnnotator.xml");
+        // important: use URL to create the XMLInputSource, otherwise it wont work from the jar package
+        in = new XMLInputSource(url);
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
 
         //create AE here
