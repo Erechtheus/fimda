@@ -14,7 +14,7 @@
 
     <name>FIMDA: Finding Mutations in the Digital Age</name>
     <description>
-        UIMA wrapper for SETH with docker container and webservice
+        UIMA wrapper for SETH with docker container
     </description>
     <url>https://github.com/Erechtheus/fimda</url>
 
