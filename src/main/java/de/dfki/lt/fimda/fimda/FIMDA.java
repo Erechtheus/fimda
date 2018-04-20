@@ -41,6 +41,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class FIMDA {
 
@@ -105,12 +106,12 @@ public class FIMDA {
 
     public void annotateXmiToXmi(Path pathIn, Path pathOut) throws ResourceInitializationException, SAXException, IOException {
 
-        System.out.println("annotate input from CAS XMI file '"+ pathIn);
+        //System.out.println("annotate input from CAS XMI file '"+ pathIn);
         casFromXmi(pathIn);
         try {
             process();
             StringWriter resultXmi = casToXmi();
-            System.out.println("write result as CAS XMI to '" + pathOut + "'");
+            //System.out.println("write result as CAS XMI to '" + pathOut + "'");
             Files.write(pathOut, resultXmi.toString().getBytes());
         } catch (AnalysisEngineProcessException | SAXException | IOException e) {
             e.printStackTrace();
@@ -146,8 +147,20 @@ public class FIMDA {
 
 
         FIMDA fimda = new FIMDA();
-        Path pathIn = Paths.get(cmd.getOptionValue("input"));
-        Path pathOut = Paths.get(cmd.getOptionValue("output"));
-        fimda.annotateXmiToXmi(pathIn, pathOut);
+        Path pathInDir = Paths.get(cmd.getOptionValue("input"));
+        Path pathOutDir = Paths.get(cmd.getOptionValue("output"));
+
+        try (Stream<Path> paths = Files.walk(pathInDir)) {
+            paths
+                    .filter(Files::isRegularFile)
+                    .map(Path::getFileName)
+                    .forEach(s -> {
+                        try {
+                            fimda.annotateXmiToXmi(pathInDir.resolve(s), pathOutDir.resolve(s));
+                        } catch (ResourceInitializationException | SAXException | IOException e) {
+                            System.err.println(s.toString() + ": error while processing file ("+e.getMessage()+")");
+                        }
+                    });
+        }
     }
 }
