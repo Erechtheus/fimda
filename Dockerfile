@@ -10,4 +10,4 @@ ARG JAR_FILE
 RUN echo $JAR_FILE
 ADD target/${JAR_FILE} /usr/share/fimda/fimda.jar
 
-EXPOSE 8080
+#EXPOSE 8080
