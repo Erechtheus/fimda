@@ -3,6 +3,8 @@ FROM openjdk:8-jre-alpine
 #ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/fimda/fimda.jar"]
 #ENTRYPOINT ["java", "-cp", "/usr/share/fimda/fimda.jar"]
 
+RUN apk add --no-cache bash
+
 # Add Maven dependencies (not shaded into the artifact; Docker-cached)
 #ADD target/lib           /usr/share/fimda/lib
 # Add the service itself
