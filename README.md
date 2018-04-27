@@ -11,6 +11,7 @@ NLP tool taking FIMDA as example.
 [How to Release](/HOW-TO-RELEASE.md) gives instructions to release a new version of this application.
 
 # Usage
+# ATTENTION: Due to OMTD compliance restrictions the REST service was removed. To use the described REST service, take a release <=0.1.1 or checkout the branch `spring_rest_service`.
 
 This wrapper exposes a REST service that can be queried by sending plain text to the endpoint (see [Query the Rest Service](#query-the-rest-service)).
 
@@ -20,7 +21,7 @@ This wrapper exposes a REST service that can be queried by sending plain text to
 
 Requires [docker](https://docs.docker.com/). Execute:
 
-`docker run -p 8080:8080 erechtheus/fimda`
+`docker run -p 8080:8080 erechtheus/fimda:0.1.1`
 
 ### Via Spring Boot
 
