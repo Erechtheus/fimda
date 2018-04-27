@@ -150,6 +150,8 @@ public class FIMDA {
         Path pathInDir = Paths.get(cmd.getOptionValue("input"));
         Path pathOutDir = Paths.get(cmd.getOptionValue("output"));
 
+        Files.createDirectories(pathOutDir);
+
         try (Stream<Path> paths = Files.walk(pathInDir)) {
             paths
                     .filter(Files::isRegularFile)
