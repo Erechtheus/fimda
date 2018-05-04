@@ -39,8 +39,8 @@
              defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
-        <release.github.description>OMTD-compliance: process only .xmi files and merge types from INPUT_FOLDER/typesystem.xml to keep existing annotations</release.github.description>
-        <release.tag>0.2.5</release.tag>
+        <release.github.description>write out (eventually merged) type system to OUTPUT_FOLDER/typesystem.xml</release.github.description>
+        <release.tag>0.2.6</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->

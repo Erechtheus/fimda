@@ -41,7 +41,7 @@ public class FIMDATest {
         Path pathIn = Paths.get(this.getClass().getResource("/input.xmi").getFile());
         Path tempPath = Paths.get("./result_temp.xmi");
         CAS aCAS = fimda.getCas(null);
-        fimda.annotateXmiToXmi(aCAS, pathIn, tempPath, null);
+        fimda.annotateXmiToXmi(aCAS, pathIn, tempPath);
 
         try {
             // convert to json (xml serialization can differ for equal inputs)

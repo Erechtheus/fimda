@@ -25,7 +25,6 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.impl.CASMgrSerializer;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.json.JsonCasSerializer;
@@ -44,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class FIMDA {
@@ -134,11 +132,9 @@ public class FIMDA {
         return aCAS;
     }
 
-    void annotateXmiToXmi(CAS aCAS, Path pathIn, Path pathOut, Path externalTypeSystem) throws ResourceInitializationException, IOException {
+    void annotateXmiToXmi(CAS aCAS, Path pathIn, Path pathOut) throws ResourceInitializationException, IOException {
 
         //System.out.println("annotate input from CAS XMI file '"+ pathIn);
-        //CAS aCAS = readXmi(pathIn, externalTypeSystem);
-        //CAS aCAS = getCas(externalTypeSystem);
         readXmi(aCAS, pathIn);
 
         try {
@@ -153,7 +149,7 @@ public class FIMDA {
         }
     }
 
-    public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException {
+    public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
         Options options = new Options();
 
         Option input = new Option("i", "input", true, "input CAS XMI file path");
@@ -184,9 +180,14 @@ public class FIMDA {
 
         Files.createDirectories(pathOutDir);
         Path externalTypeSystemFile = pathInDir.resolve("typesystem.xml");
-        //if (Files.exists(externalTypeSystemFile))
         CAS aCAS = fimda.getCas(externalTypeSystemFile);
-        // TODO: write out (merged/new) typesystem.xml (from aCAS.getTypeSystem())
+
+        // write out (merged/new) typesystem.xml
+        try (OutputStream typeOS = new FileOutputStream(pathOutDir.resolve("typesystem.xml").toFile())) {
+            TypeSystemUtil.typeSystem2TypeSystemDescription(aCAS.getTypeSystem()).toXML(typeOS);
+        } catch (IOException | SAXException e) {
+            throw new IOException(e);
+        }
 
         try (Stream<Path> paths = Files.walk(pathInDir)) {
             paths
@@ -195,7 +196,7 @@ public class FIMDA {
                     .map(Path::getFileName)
                     .forEach(s -> {
                         try {
-                            fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s), externalTypeSystemFile);
+                            fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s));
                         } catch (ResourceInitializationException | IOException e) {
                             System.err.println(s.toString() + ": error while processing file ("+e.getMessage()+")");
                         }
