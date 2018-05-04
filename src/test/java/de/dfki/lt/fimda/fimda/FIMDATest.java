@@ -40,13 +40,18 @@ public class FIMDATest {
         FIMDA fimda = new FIMDA();
         Path pathIn = Paths.get(this.getClass().getResource("/input.xmi").getFile());
         Path tempPath = Paths.get("./result_temp.xmi");
-        fimda.annotateXmiToXmi(pathIn, tempPath, null);
+        CAS aCAS = fimda.getCas(null);
+        fimda.annotateXmiToXmi(aCAS, pathIn, tempPath, null);
 
         try {
             // convert to json (xml serialization can differ for equal inputs)
-            CAS aCAS = fimda.readXmi(Paths.get(this.getClass().getResource("/result.xmi").getFile()), null);
-            String expectedJCasStr = fimda.casToJson(aCAS).toString();
-            CAS aCAS_temp = fimda.readXmi(tempPath, null);
+            //CAS aCAS = fimda.readXmi(Paths.get(this.getClass().getResource("/result.xmi").getFile()), null);
+            CAS aCAS_expected = fimda.getCas(null);
+            fimda.readXmi(aCAS_expected, Paths.get(this.getClass().getResource("/result.xmi").getFile()));
+            String expectedJCasStr = fimda.casToJson(aCAS_expected).toString();
+            //CAS aCAS_temp = fimda.readXmi(tempPath, null);
+            CAS aCAS_temp = fimda.getCas(null);
+            fimda.readXmi(aCAS_temp, tempPath);
             String jCasStr = fimda.casToJson(aCAS_temp).toString();
 
             assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
