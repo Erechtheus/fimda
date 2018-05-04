@@ -20,10 +20,10 @@ package de.dfki.lt.fimda.fimda;
  * #L%
  */
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,21 +35,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FIMDATest {
 
     @Test
-    public void testMain() throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+    public void testMain() throws ResourceInitializationException, IOException, InvalidXMLException {
 
         FIMDA fimda = new FIMDA();
-        Path pathIn = Paths.get(this.getClass().getResource("/input.xml").getFile());
-        Path tempPath = Paths.get("./result_temp.xml");
-        fimda.annotateXmiToXmi(pathIn, tempPath);
+        Path pathIn = Paths.get(this.getClass().getResource("/input.xmi").getFile());
+        Path tempPath = Paths.get("./result_temp.xmi");
+        fimda.annotateXmiToXmi(pathIn, tempPath, null);
 
         try {
             // convert to json (xml serialization can differ for equal inputs)
-            fimda.casFromXmi(Paths.get(this.getClass().getResource("/result.xml").getFile()));
-            String expectedJCasStr = fimda.casToJson().toString();
-            fimda.resetCas();
-            fimda.casFromXmi(tempPath);
-            String jCasStr = fimda.casToJson().toString();
-            fimda.resetCas();
+            CAS aCAS = fimda.readXmi(Paths.get(this.getClass().getResource("/result.xmi").getFile()), null);
+            String expectedJCasStr = fimda.casToJson(aCAS).toString();
+            CAS aCAS_temp = fimda.readXmi(tempPath, null);
+            String jCasStr = fimda.casToJson(aCAS_temp).toString();
 
             assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
         } finally {

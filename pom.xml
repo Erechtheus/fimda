@@ -39,8 +39,8 @@
              defined for server docker.io in settings.xml -->
         <docker.image.prefix>erechtheus</docker.image.prefix>
         <!-- release on github (and docker hub) -->
-        <release.github.description>bugfix release: create output folder if it does not exist</release.github.description>
-        <release.tag>0.2.4</release.tag>
+        <release.github.description>OMTD-compliance: process only .xmi files and merge types from INPUT_FOLDER/typesystem.xml to keep existing annotations</release.github.description>
+        <release.tag>0.2.5</release.tag>
         <!-- set license for license-maven-plugin (file headers, third-party.txt, etc.) -->
         <license.licenseName>apache_v2</license.licenseName>
         <!-- avoid warnings regarding dependencies for site generation -->
