@@ -23,7 +23,6 @@
     <name>SethTypeSystem</name>
     <description>Type System Definition for SETH</description>
     <vendor>Apache Software Foundation</vendor>
-    <!--<version>1.0</version> -->
     <types>
         <typeDescription>
             <name>de.dfki.lt.fimda.fimda.MutationAnnotation</name>
@@ -33,7 +32,6 @@
                 <featureDescription>
                     <name>mtType</name>
                     <description>mutation type</description>
-                    <!--<rangeTypeName>seth.ner.wrapper.Type</rangeTypeName>-->
                     <rangeTypeName>uima.cas.String</rangeTypeName>
                 </featureDescription>
                 <featureDescription>
