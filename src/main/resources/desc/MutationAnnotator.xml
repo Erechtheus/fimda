@@ -40,8 +40,6 @@
             <capability>
                 <inputs />
                 <outputs>
-                    <!--<type>seth.fimda.MutationAnnotation</type>
-                    <feature>seth.fimda.MutationAnnotation:wtResidue</feature>-->
                     <type allAnnotatorFeatures ="true">de.dfki.lt.fimda.fimda.MutationAnnotation</type>
                 </outputs>
             </capability>
