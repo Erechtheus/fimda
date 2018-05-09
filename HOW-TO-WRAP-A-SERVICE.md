@@ -10,7 +10,7 @@ This intend requires to solve the following main issues:
 
 ## Integration into UIMA architecture
 
-In its core, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. 
+Essentially, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. 
 Both can be defined via *descriptor files* that are later used to generate respective Java classes for annotations 
 and annotator engines. Objects of these classes are called to produce annotation entities in the required format.
 
