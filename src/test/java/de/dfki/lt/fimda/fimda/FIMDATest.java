@@ -21,11 +21,13 @@ package de.dfki.lt.fimda.fimda;
  */
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.json.JsonCasSerializer;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +35,14 @@ import java.nio.file.Paths;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FIMDATest {
+
+    private static StringWriter casToJson(CAS aCAS) throws IOException {
+        StringWriter sw = new StringWriter();
+        JsonCasSerializer jcs = new JsonCasSerializer();
+        jcs.setPrettyPrint(true); // do some configuration
+        jcs.serialize(aCAS, sw); // serialize into sw
+        return sw;
+    }
 
     @Test
     public void testMain() throws ResourceInitializationException, IOException, InvalidXMLException {
@@ -45,14 +55,12 @@ public class FIMDATest {
 
         try {
             // convert to json (xml serialization can differ for equal inputs)
-            //CAS aCAS = fimda.readXmi(Paths.get(this.getClass().getResource("/result.xmi").getFile()), null);
             CAS aCAS_expected = fimda.getCas(null);
             fimda.readXmi(aCAS_expected, Paths.get(this.getClass().getResource("/result.xmi").getFile()));
-            String expectedJCasStr = fimda.casToJson(aCAS_expected).toString();
-            //CAS aCAS_temp = fimda.readXmi(tempPath, null);
+            String expectedJCasStr = FIMDATest.casToJson(aCAS_expected).toString();
             CAS aCAS_temp = fimda.getCas(null);
             fimda.readXmi(aCAS_temp, tempPath);
-            String jCasStr = fimda.casToJson(aCAS_temp).toString();
+            String jCasStr = FIMDATest.casToJson(aCAS_temp).toString();
 
             assertThat(jCasStr).isEqualToIgnoringWhitespace(expectedJCasStr);
         } finally {

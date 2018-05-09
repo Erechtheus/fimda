@@ -27,7 +27,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
-import org.apache.uima.json.JsonCasSerializer;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -63,27 +62,16 @@ public class FIMDA {
 
     CAS getCas(Path externalTypeSystem) throws IOException, ResourceInitializationException {
         CAS aCAS = ae.newCAS();
+        // merge external type system, if that file is available
         if (nonNull(externalTypeSystem) && Files.exists(externalTypeSystem)) {
             File tFile = externalTypeSystem.toFile();
             try {
                 List<TypeSystemDescription> tsds = new ArrayList<>();
-                //if (mergeTypeSystem) {
                 tsds.add(TypeSystemUtil.typeSystem2TypeSystemDescription(aCAS.getTypeSystem()));
-                //}
                 tsds.add(UIMAFramework.getXMLParser()
                         .parseTypeSystemDescription(new XMLInputSource(tFile)));
                 TypeSystemDescription merged = CasCreationUtils.mergeTypeSystems(tsds);
-
-                // Create a temporary CAS with the merged TS
-                //CAS mergedCas = CasCreationUtils.createCas(merged, null, null, null);
                 aCAS = CasCreationUtils.createCas(merged, null, null, null);
-
-                // Create a holder for the CAS metadata
-                //CASMgrSerializer casMgrSerializer = Serialization
-                //        .serializeCASMgr((CASImpl) mergedCas);
-
-                // Reinitialize CAS with merged type system
-                //((CASImpl) aCAS).setupCasFromCasMgrSerializer(casMgrSerializer);
             }
             catch (InvalidXMLException e) {
                 throw new IOException(e);
@@ -102,28 +90,12 @@ public class FIMDA {
         }
     }
 
-    StringWriter casToJson(CAS aCAS) throws IOException {
-        StringWriter sw = new StringWriter();
-        JsonCasSerializer jcs = new JsonCasSerializer();
-        jcs.setPrettyPrint(true); // do some configuration
-        jcs.serialize(aCAS, sw); // serialize into sw
-        return sw;
-    }
-
-    StringWriter casToXmi(CAS aCAS) throws SAXException {
+    void writeXmi(CAS aCAS, Path pathOut) throws SAXException, IOException {
         StringWriter sw = new StringWriter();
         XmiCasSerializer ser = new XmiCasSerializer(aCAS.getTypeSystem());
         XMLSerializer xmlSer = new XMLSerializer(sw, true);
         ser.serialize(aCAS, xmlSer.getContentHandler());
-        return sw;
-    }
-
-    @Deprecated
-    CAS casFromXmi(Path path) throws IOException, SAXException, ResourceInitializationException {
-        InputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(path));
-        CAS aCAS = ae.newCAS();
-        XmiCasDeserializer.deserialize(inputStream, aCAS, true);
-        return aCAS;
+        Files.write(pathOut, sw.toString().getBytes());
     }
 
     CAS casFromText(String text) throws ResourceInitializationException {
@@ -132,31 +104,26 @@ public class FIMDA {
         return aCAS;
     }
 
-    void annotateXmiToXmi(CAS aCAS, Path pathIn, Path pathOut) throws ResourceInitializationException, IOException {
-
-        //System.out.println("annotate input from CAS XMI file '"+ pathIn);
-        readXmi(aCAS, pathIn);
-
+    void annotateXmiToXmi(CAS aCAS, Path pathIn, Path pathOut) {
         try {
+            readXmi(aCAS, pathIn);
             ae.process(aCAS);
-            StringWriter resultXmi = casToXmi(aCAS);
-            //System.out.println("write result as CAS XMI to '" + pathOut + "'");
-            Files.write(pathOut, resultXmi.toString().getBytes());
-        } catch (AnalysisEngineProcessException | SAXException | IOException e) {
-            e.printStackTrace();
+            writeXmi(aCAS, pathOut);
+        } catch (SAXException | IOException | AnalysisEngineProcessException e){
+            System.err.println(pathIn.toString() + ": error while processing file ("+e.getMessage()+")");
         } finally {
             aCAS.reset();
         }
     }
 
-    public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+    public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException {
         Options options = new Options();
 
-        Option input = new Option("i", "input", true, "input CAS XMI file path");
+        Option input = new Option("i", "input", true, "input directory containing CAS XMI files (only files with extension '.xmi' are processed)");
         input.setRequired(true);
         options.addOption(input);
 
-        Option output = new Option("o", "output", true, "output CAS XMI file");
+        Option output = new Option("o", "output", true, "output directory");
         output.setRequired(true);
         options.addOption(output);
 
@@ -194,13 +161,7 @@ public class FIMDA {
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().toLowerCase().endsWith(".xmi"))
                     .map(Path::getFileName)
-                    .forEach(s -> {
-                        try {
-                            fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s));
-                        } catch (ResourceInitializationException | IOException e) {
-                            System.err.println(s.toString() + ": error while processing file ("+e.getMessage()+")");
-                        }
-                    });
+                    .forEach(s -> fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s)));
         }
     }
 }
