@@ -141,10 +141,10 @@ public class FIMDA {
             return;
         }
 
-        FIMDA fimda = new FIMDA();
         Path pathInDir = Paths.get(cmd.getOptionValue("input"));
         Path pathOutDir = Paths.get(cmd.getOptionValue("output"));
 
+        FIMDA fimda = new FIMDA();
         Files.createDirectories(pathOutDir);
         Path externalTypeSystemFile = pathInDir.resolve("typesystem.xml");
         CAS aCAS = fimda.getCas(externalTypeSystemFile);
