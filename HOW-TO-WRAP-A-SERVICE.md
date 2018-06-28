@@ -69,7 +69,7 @@ The Analysis Engine descriptor defines the capabilities of the NLP service, espe
 
 Have a look at the [MutationAnnotator.xml](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733854b359e64e4227aa531f8d7/src/main/resources/desc/MutationAnnotator.xml):
 
-´´´xml
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- APACHE 2.0 LICENSE HEADER -->
 <!--  Descriptor for the MutationAnnotator. -->
@@ -99,7 +99,7 @@ Have a look at the [MutationAnnotator.xml](https://github.com/Erechtheus/fimda/b
         </capabilities>
     </analysisEngineMetaData>
 </analysisEngineDescription>
-´´´
+```
 
 The type system defined in `SethTypeSystem.xml` is imported and all of its features are declared as output capabilities. `input` remains empty because SETH does not rely on any pre-calculated features. Furthermore, the **annotator class** `e.dfki.lt.fimda.fimda.MutationAnnotator` is defined via its fully-qualified class name. The functionality of the annotator class is described below.
 
@@ -139,9 +139,11 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
 
         String mtRegex_filename = "src/main/resources/SETH/mutations.txt";
         seth = new SETH(mtRegex_filename, true, true);
-}
+    }
 
 ...
+
+}
 ```
 
 Furthermore, in the [`process`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733854b359e64e4227aa531f8d7/src/main/java/de/dfki/lt/fimda/fimda/MutationAnnotator.java#L51-L83) method the text to annotate is retrieved from the CAS object and  the SETH annotator is called. For every found annotation a `MutationAnnotation` object is created and filled with data from the SETH annotation. Finally, the annotation object is added to the CAS object by calling `annotation.addToIndexes()`.
@@ -266,6 +268,10 @@ Finally, the functions [`readXmi`](https://github.com/Erechtheus/fimda/blob/9bbd
 
 As usual, the [`main`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733854b359e64e4227aa531f8d7/src/main/java/de/dfki/lt/fimda/fimda/FIMDA.java#L119-L166) method sticks all together:
 ```java
+ public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException {
+ 
+...
+ 
         FIMDA fimda = new FIMDA();
         Files.createDirectories(pathOutDir);
         Path externalTypeSystemFile = pathInDir.resolve("typesystem.xml");
@@ -280,6 +286,10 @@ As usual, the [`main`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733
                     .map(Path::getFileName)
                     .forEach(s -> fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s)));
         }
+
+...
+     
+    }
 ```
 
 In addition to the described functionality, it handles the [argument parsing](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733854b359e64e4227aa531f8d7/src/main/java/de/dfki/lt/fimda/fimda/FIMDA.java#L120-L145) (to get input and output directories):
