@@ -5,8 +5,7 @@
 [![Build Status](https://travis-ci.org/Erechtheus/fimda.svg?branch=master)](https://travis-ci.org/Erechtheus/fimda)
 
 [How to wrap a service](/HOW-TO-WRAP-A-SERVICE.md) explains the necessary steps to create an 
-[UIMA CAS](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.cas) compliant REST service given a Java 
-NLP tool taking FIMDA as example. 
+[UIMA CAS](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.cas) compliant wrapper for your Java NLP tool taking FIMDA as example. 
 
 [How to Release](/HOW-TO-RELEASE.md) gives instructions to release a new version of this application.
 
