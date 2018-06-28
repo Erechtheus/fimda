@@ -270,14 +270,14 @@ As usual, the [`main`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733
 ```java
  public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException {
  
-...
+... (argument parsing, see below)
  
         FIMDA fimda = new FIMDA();
         Files.createDirectories(pathOutDir);
         Path externalTypeSystemFile = pathInDir.resolve("typesystem.xml");
         CAS aCAS = fimda.getCas(externalTypeSystemFile);
 
-...
+... (write out type system, see below)
 
         try (Stream<Path> paths = Files.walk(pathInDir)) {
             paths
@@ -285,10 +285,7 @@ As usual, the [`main`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733
                     .filter(path -> path.toString().toLowerCase().endsWith(".xmi"))
                     .map(Path::getFileName)
                     .forEach(s -> fimda.annotateXmiToXmi(aCAS, pathInDir.resolve(s), pathOutDir.resolve(s)));
-        }
-
-...
-     
+        }     
     }
 ```
 
