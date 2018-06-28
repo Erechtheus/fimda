@@ -2,7 +2,7 @@
 
 This document explains how to implement a [UIMA CAS](https://uima.apache.org/d/uimaj-3.0.0/references.html#ugr.ref.cas) complient wrapper for your Java NLP tool. It was mainly destilled from the [UIMA getting started guide](https://uima.apache.org/d/uimaj-3.0.0/tutorials_and_users_guides.html#ugr.tug.aae.getting_started). We are going to use FIMDA as example. 
 
-Essentially, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. Both can be defined via *descriptor files* that are later used to generate respective Java classes for annotations and annotator engines. Objects of these classes are called to produce annotation entities in the required format.
+Essentially, the UIMA interface is build on a CAS representation for the resulting NLP annotations and an annotation engine. Both can be defined via **descriptor files** that are later used to generate respective Java classes for annotations and annotator engines. Objects of these classes are called to produce annotation entities in the required format.
 
 ## Create a Type System
 
@@ -12,9 +12,9 @@ The Type System holds CAS Feature Structure representation(s). See the UIMA refe
 
 [SethTypeSystem.xml](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733854b359e64e4227aa531f8d7/src/main/resources/desc/SethTypeSystem.xml)
 
-An *uima.tcas.Annotation* object *de.dfki.lt.fimda.fimda.MutationAnnotation* is defined, that holds the different typed features (e.g., mutation type, mutation position, etc.).
+An `uima.tcas.Annotation` object `de.dfki.lt.fimda.fimda.MutationAnnotation` is defined, that holds the different typed features (e.g., mutation type, mutation position, etc.).
 
-Note: Any *uima.tcas.Annotation* type inherits begin and end features.
+Note: Any `uima.tcas.Annotation` type inherits begin and end features.
 
 ## The Analysis Engine Descriptor
 
