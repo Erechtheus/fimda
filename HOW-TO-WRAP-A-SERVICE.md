@@ -141,7 +141,7 @@ public class MutationAnnotator extends JCasAnnotator_ImplBase {
         seth = new SETH(mtRegex_filename, true, true);
     }
 
-...
+    ...
 
 }
 ```
@@ -270,14 +270,14 @@ As usual, the [`main`](https://github.com/Erechtheus/fimda/blob/9bbd103d057b8733
 ```java
  public static void main(String[] args) throws ResourceInitializationException, IOException, InvalidXMLException {
  
-... (argument parsing, see below)
+        ... (argument parsing, see below)
  
         FIMDA fimda = new FIMDA();
         Files.createDirectories(pathOutDir);
         Path externalTypeSystemFile = pathInDir.resolve("typesystem.xml");
         CAS aCAS = fimda.getCas(externalTypeSystemFile);
 
-... (write out type system, see below)
+        ... (write out type system, see below)
 
         try (Stream<Path> paths = Files.walk(pathInDir)) {
             paths
